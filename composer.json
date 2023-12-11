@@ -10,7 +10,7 @@
     },
     "views": [
         "resources/views/vendor/user-registration"
-    ]
+    ],
     "license": "UNLICENSE",
     "autoload": {
         "psr-4": {
