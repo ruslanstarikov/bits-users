@@ -3,7 +3,11 @@
     "description": "Laravel module for HTMX registration",
     "type": "composer-plugin",
     "extra": {
-        "class": "LaravelHtmx\\UserRegistration\\UsersServiceProvider"
+        "laravel": {
+            "providers": [
+                "LaravelHtmx\\UserRegistration\\UsersServiceProvider"
+            ]
+        }
     },
     "license": "UNLICENSE",
     "autoload": {
