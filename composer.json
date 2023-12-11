@@ -1,7 +1,6 @@
 {
     "name": "bits-laravel-htmx/user-registration",
     "description": "Laravel module for HTMX registration",
-    "type": "composer-plugin",
     "extra": {
         "laravel": {
             "providers": [
