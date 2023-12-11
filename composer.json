@@ -2,6 +2,9 @@
     "name": "bits-laravel-htmx/user-registration",
     "description": "Laravel module for HTMX registration",
     "type": "composer-plugin",
+    "extra": {
+        "class": "LaravelHtmx\\UserRegistration\\UsersServiceProvider"
+    },
     "license": "UNLICENSE",
     "autoload": {
         "psr-4": {
