@@ -1,0 +1,20 @@
+{
+    "name": "laravel-htmx/user-registration",
+    "description": "Laravel module for HTMX registration",
+    "type": "composer-plugin",
+    "license": "UNLICENSE",
+    "autoload": {
+        "psr-4": {
+            "LaravelHtmx\\UserRegistration\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Ruslan Starikov"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "laravel/framework": "^10.0"
+    }
+}
