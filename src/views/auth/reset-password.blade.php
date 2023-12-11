@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('content')
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        @include('vendor.user-registration.components.simple.form_head', ['header' => 'Reset Password'])
+        @include('vendor.user-registration.components.basic.form_head', ['header' => 'Reset Password'])
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <form class="space-y-6" method="POST" action="{{ route('password.store') }}">
                 @csrf
