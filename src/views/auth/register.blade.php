@@ -1,7 +1,7 @@
 @extends('layouts.base')
 @section('content')
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        @include('vendor.user-registration.components.basic.form_head', ['header' => 'Register a new account'])
+        @include('vendor.user-registration.components.basic.form-head', ['header' => 'Register a new account'])
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
             <form class="space-y-6" hx-post="{{ route('register') }}" hx-target="body">
                 @csrf
