@@ -1,4 +1,4 @@
-@extends('layouts.base')
+@extends('vendor.user-registration.layouts.base')
 @section('content')
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         @include('vendor.user-registration.components.basic.form-head', ['header' => 'Register a new account'])
