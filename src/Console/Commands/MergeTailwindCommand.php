@@ -13,8 +13,8 @@ class MergeTailwindCommand extends Command
 
     public function handle()
     {
-		$packageTailwindConfig = __DIR__.'/configs/tailwind.config.js';
-		$packagePackageJson = __DIR__.'/configs/package.json';
+		$packageTailwindConfig = __DIR__.'../../configs/tailwind.config.js';
+		$packagePackageJson = __DIR__.'../../configs/package.json';
 
 		$userTailwindConfig = base_path('tailwind.config.js');
 		$userPackageJson = base_path('package.json');
