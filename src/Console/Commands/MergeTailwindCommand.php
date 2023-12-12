@@ -19,43 +19,38 @@ class MergeTailwindCommand extends Command
 		$userTailwindConfig = base_path('tailwind.config.js');
 		$userPackageJson = base_path('package.json');
 
-//		$this->mergePackageJson($packagePackageJson, $userPackageJson);
-		$this->mergeTailwindConfig($packageTailwindConfig, $userTailwindConfig);
-		$this->info('Tailwind CSS and package.json files merged successfully.');
-	}
-
-	private function mergePackageJson(string $packagePackageJson, string $userPackageJson)
-	{
-		$mergedPackageJson = array_merge(
-			json_decode(File::get($packagePackageJson), true),
-			json_decode(File::get($userPackageJson), true)
-		);
-		File::put($userPackageJson, json_encode($mergedPackageJson, JSON_PRETTY_PRINT));
-	}
-
-	private function mergeTailwindConfig(string $packageTailwindConfigPath, string $userTailwindConfigPath)
-	{
-		$pluginsToAdd = [
-			'@tailwindcss/forms',
-			'@tailwindcss/typography',
-			'@tailwindcss/aspect-ratio'
-		];
-		if (file_exists($userTailwindConfigPath)) {
-			$userTailwindConfigContent = File::get($userTailwindConfigPath);
-			$pattern = '/export default (\{.*?\});/s';
-			preg_match($pattern, $userTailwindConfigContent, $matches);
-			if (isset($matches[1])) {
-				$defaultExportsConfig = json_decode($matches[1], true);
-			}
-
-			if (!isset($defaultExportsConfig['plugins'])) {
-				// If "plugins" key doesn't exist, add it with the plugins array
-				$defaultExportsConfig['plugins'] = $pluginsToAdd;
-			} else {
-				// If "plugins" key exists, merge the desired plugins with the existing ones
-				$defaultExportsConfig['plugins'] = array_merge($pluginsToAdd, $defaultExportsConfig['plugins']);
-			}
-			$this->info(json_encode($defaultExportsConfig, JSON_PRETTY_PRINT));
+		$this->mergePackageJson($packagePackageJson, $userPackageJson);
+		if(!file_exists($userTailwindConfig)) {
+			File::copy($packageTailwindConfig, $userTailwindConfig);
 		}
+		else
+		{
+			$replaceTailwindQuestion = $this->ask('Do you want to replace your tailwind.config.js file? (y/n)');
+			if($replaceTailwindQuestion == 'y')
+			{
+				File::copy($packageTailwindConfig, $userTailwindConfig);
+			}
+			else
+			{
+				$this->info("You will need to manually add the following plugins to your tailwind.conf.js");
+				$this->info("[require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('@tailwindcss/aspect-ratio')]");
+			}
+		}
+
+		$this->info("Configuration complete. Now run npm install && npm run dev");
+	}
+
+	private function mergePackageJson(string $libPackageJsonFilePath, string $userPackageJsonFilePath)
+	{
+		$userPackageArray =  json_decode(File::get($userPackageJsonFilePath), true);
+		$packagePackageArray = json_decode(File::get($libPackageJsonFilePath), true);
+		$userPackageDependencies = $userPackageArray['devDependencies'] ?? [];
+		$packagePackageDependencies = $packagePackageArray['devDependencies'] ?? [];
+		$mergedDependencies = array_merge($userPackageDependencies, $packagePackageDependencies);
+
+		$finalPackageJson = $userPackageArray;
+		$finalPackageJson['devDependencies'] = $mergedDependencies;
+		$this->info(json_encode($finalPackageJson, JSON_PRETTY_PRINT));
+		File::put($userPackageJsonFilePath, json_encode($finalPackageJson, JSON_PRETTY_PRINT));
 	}
 }
