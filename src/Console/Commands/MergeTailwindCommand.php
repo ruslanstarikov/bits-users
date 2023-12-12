@@ -50,7 +50,6 @@ class MergeTailwindCommand extends Command
 
 		$finalPackageJson = $userPackageArray;
 		$finalPackageJson['devDependencies'] = $mergedDependencies;
-		$this->info(json_encode($finalPackageJson, JSON_PRETTY_PRINT));
 		File::put($userPackageJsonFilePath, json_encode($finalPackageJson, JSON_PRETTY_PRINT));
 	}
 }
