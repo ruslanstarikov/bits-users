@@ -19,8 +19,8 @@ class MergeTailwindCommand extends Command
 		$userTailwindConfig = base_path('tailwind.config.js');
 		$userPackageJson = base_path('package.json');
 
-		$this->mergePackageJson($packagePackageJson, $userPackageJson);
-
+//		$this->mergePackageJson($packagePackageJson, $userPackageJson);
+		$this->mergeTailwindConfig($packageTailwindConfig, $userTailwindConfig);
 		$this->info('Tailwind CSS and package.json files merged successfully.');
 	}
 
@@ -41,18 +41,21 @@ class MergeTailwindCommand extends Command
 			'@tailwindcss/aspect-ratio'
 		];
 		if (file_exists($userTailwindConfigPath)) {
-			$userTailwindConfig = file_get_contents($userTailwindConfigPath);
-			$contents = preg_replace('/^module.exports = /', '', $userTailwindConfig);
-			$contents = rtrim(rtrim($contents, "\n"), ';');
-			$config = json_decode($contents, true);
-			if (!isset($config['plugins'])) {
+			$userTailwindConfigContent = File::get($userTailwindConfigPath);
+			$pattern = '/export default (\{.*?\});/s';
+			preg_match($pattern, $userTailwindConfigContent, $matches);
+			if (isset($matches[1])) {
+				$defaultExportsConfig = json_decode($matches[1], true);
+			}
+
+			if (!isset($defaultExportsConfig['plugins'])) {
 				// If "plugins" key doesn't exist, add it with the plugins array
-				$config['plugins'] = $pluginsToAdd;
+				$defaultExportsConfig['plugins'] = $pluginsToAdd;
 			} else {
 				// If "plugins" key exists, merge the desired plugins with the existing ones
-				$config['plugins'] = array_merge($pluginsToAdd, $config['plugins']);
+				$defaultExportsConfig['plugins'] = array_merge($pluginsToAdd, $defaultExportsConfig['plugins']);
 			}
-			$this->info(json_encode($config, JSON_PRETTY_PRINT));
+			$this->info(json_encode($defaultExportsConfig, JSON_PRETTY_PRINT));
 		}
 	}
 }
