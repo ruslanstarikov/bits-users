@@ -7,8 +7,6 @@ use LaravelHtmx\UserRegistration\Console\Commands\MergeTailwindCommand;
 
 class UsersServiceProvider extends ServiceProvider
 {
-	protected $cssFilePath = __DIR__.'resources/css/package.css';
-
 	public function boot()
 	{
 		$this->loadRoutesFrom(__DIR__.'/routes.php');
@@ -26,7 +24,7 @@ class UsersServiceProvider extends ServiceProvider
 
 	private function publishCss()
 	{
-		$cssFilePath = __DIR__.'resources/css/package.css';
+		$cssFilePath = __DIR__.'/resources/css/package.css';
 		$laravelDestination = resource_path('css');
 		$this->publishes([
 			$cssFilePath => $laravelDestination,
