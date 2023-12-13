@@ -1,11 +1,14 @@
 <?php
 
 namespace LaravelHtmx\UserRegistration;
+use Illuminate\Foundation\Mix;
 use Illuminate\Support\ServiceProvider;
 use LaravelHtmx\UserRegistration\Console\Commands\MergeTailwindCommand;
 
 class UsersServiceProvider extends ServiceProvider
 {
+	protected $cssFilePath = __DIR__.'resources/css/package.css';
+
 	public function boot()
 	{
 		$this->loadRoutesFrom(__DIR__.'/routes.php');
@@ -18,6 +21,16 @@ class UsersServiceProvider extends ServiceProvider
 				__DIR__.'/views' => resource_path('views/vendor/user-registration'),
 			], 'user-registration-views');
 		}
+		$this->publishCss();
+	}
+
+	private function publishCss()
+	{
+		$cssFilePath = __DIR__.'resources/css/package.css';
+		$laravelDestination = resource_path('css');
+		$this->publishes([
+			$cssFilePath => $laravelDestination,
+		], 'public');
 	}
 
 	public function register()
