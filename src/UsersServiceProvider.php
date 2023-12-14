@@ -25,7 +25,7 @@ class UsersServiceProvider extends ServiceProvider
 	private function publishCss()
 	{
 		$cssFilePath = __DIR__.'/resources/css/package.css';
-		$laravelDestination = resource_path('css');
+		$laravelDestination = resource_path('css/package.css');
 		$this->publishes([
 			$cssFilePath => $laravelDestination,
 		], 'public');
