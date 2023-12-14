@@ -13,19 +13,28 @@ class MergeTailwindCommand extends Command
 
     public function handle()
     {
-		$sourceTailwindConfig = __DIR__.'/../../configs/tailwind.config.js';
-		$sourcePackageJsonConfig = __DIR__.'/../../configs/package.json';
-		$sourcePostCssConfig = __DIR__.'/../../configs/postcss.config.js';
+		$sourceFiles = [
+			'tailwind' => __DIR__.'/../../configs/tailwind.config.js',
+			'package' => __DIR__.'/../../configs/package.json',
+			'postcss' => __DIR__.'/../../configs/postcss.config.js',
+			'appcss' => __DIR__.'/../../resources/css/package.css',
+		];
 
-		$targetTailwind = base_path('tailwind.config.js');
-		$targetPackageJson = base_path('package.json');
-		$targetPostCssConfig = base_path('postcss.config.js');
-		$this->mergePackageJson($sourcePackageJsonConfig, $targetPackageJson);
+		$targetFiles = [
+			'tailwind' => base_path('tailwind.config.js'),
+			'package' => base_path('package.json'),
+			'postcss' => base_path('postcss.config.js'),
+			'appcss' => resource_path('css/app.css'),
+		];
+		$this->mergePackageJson($sourceFiles['package'], $targetFiles['package']);
 
 		$tailwindInstruction = "You will need to manually add the following plugins to your tailwind.conf.js\n[require('@tailwindcss/forms'), require('@tailwindcss/typography'), require('@tailwindcss/aspect-ratio')]";
 
-		$this->mergeFilePrompt($sourceTailwindConfig, $targetTailwind, $tailwindInstruction);
-		$this->mergeFilePrompt($sourcePostCssConfig, $targetPostCssConfig);
+		$this->mergeFilePrompt($sourceFiles['tailwind'], $targetFiles['tailwind'], $tailwindInstruction);
+		$this->mergeFilePrompt($sourceFiles['postcss'], $targetFiles['postcss']);
+		$this->mergeFilePrompt($sourceFiles['appcss'], $targetFiles['appcss']);
+
+
 		$this->info("Configuration complete. Now run npm install && npm run dev");
 	}
 
